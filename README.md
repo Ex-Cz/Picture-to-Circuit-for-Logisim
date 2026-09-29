@@ -2,7 +2,7 @@
 
 This repository contains only the cross-platform launchers for the Picture from Picture circuit-layout tool. It does **not** include Logisim source or rebuild Logisim.
 
-The launchers call `com.cburch.logisim.gui.paint.PaintTool` from a Logisim JAR that already contains Picture from Picture. Provide that JAR with `LOGISIM_JAR`, or put `picture-to-circuit.jar`/`logisim.jar` beside the launcher or one directory above it. Java 8 or newer is required for JAR mode. On macOS, the Unix launcher can also use a `Logisim.app` via `LOGISIM_APP`.
+The launchers call `com.cburch.logisim.gui.paint.PaintTool` from a Logisim JAR that already contains Picture from Picture. Provide that JAR with `LOGISIM_JAR`, or put `picture-to-circuit.jar`/`logisim.jar` beside the launcher or one directory above it. Java 8 or newer is required.
 
 ## Usage
 

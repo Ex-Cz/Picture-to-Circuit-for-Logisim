@@ -2,7 +2,6 @@
 # Picture from Picture launcher for macOS and Linux.
 # It expects a Logisim JAR containing com.cburch.logisim.gui.paint.PaintTool.
 # Set LOGISIM_JAR or place picture-to-circuit.jar/logisim.jar beside this script or one directory above.
-# On macOS without Java, set LOGISIM_APP to a compatible Logisim.app.
 
 case $0 in
   */*) HERE=$(CDPATH= cd -- "${0%/*}" && pwd) ;;
@@ -26,14 +25,6 @@ fi
 
 if [ -n "$JAVA" ] && [ -n "$JAR" ] && [ -f "$JAR" ]; then
   exec "$JAVA" -Dapple.awt.application.name="Paint from Picture" -cp "$JAR" "$MAIN" "$@"
-fi
-
-APP=${LOGISIM_APP:-}
-if [ -z "$APP" ] && [ -x "$HERE/Logisim.app/Contents/MacOS/Logisim" ]; then
-  APP=$HERE/Logisim.app
-fi
-if [ -n "$APP" ] && [ -x "$APP/Contents/MacOS/Logisim" ]; then
-  exec "$APP/Contents/MacOS/Logisim" -paint "$@"
 fi
 
 if [ -z "$JAR" ] || [ ! -f "$JAR" ]; then
