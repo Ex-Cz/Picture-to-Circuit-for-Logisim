@@ -1,16 +1,19 @@
 @echo off
 rem Picture from Picture launcher for Windows.
 rem It expects a Logisim JAR containing com.cburch.logisim.gui.paint.PaintTool.
-rem Set LOGISIM_JAR or place logisim.jar beside this script.
+rem Set LOGISIM_JAR or place picture-to-circuit.jar/logisim.jar beside this script or one directory above.
 
 setlocal
 set "HERE=%~dp0"
 set "MAIN=com.cburch.logisim.gui.paint.PaintTool"
 
 set "JAR=%LOGISIM_JAR%"
+if not defined JAR if exist "%HERE%picture-to-circuit.jar" set "JAR=%HERE%picture-to-circuit.jar"
+if not defined JAR if exist "%HERE%..\picture-to-circuit.jar" set "JAR=%HERE%..\picture-to-circuit.jar"
 if not defined JAR if exist "%HERE%logisim.jar" set "JAR=%HERE%logisim.jar"
+if not defined JAR if exist "%HERE%..\logisim.jar" set "JAR=%HERE%..\logisim.jar"
 if not defined JAR (
-  echo paint-from-picture: set LOGISIM_JAR or put logisim.jar beside this script 1>&2
+  echo paint-from-picture: set LOGISIM_JAR or put picture-to-circuit.jar/logisim.jar beside this script or one directory above 1>&2
   exit /b 1
 )
 

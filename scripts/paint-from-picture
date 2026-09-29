@@ -1,7 +1,7 @@
 #!/bin/sh
 # Picture from Picture launcher for macOS and Linux.
 # It expects a Logisim JAR containing com.cburch.logisim.gui.paint.PaintTool.
-# Set LOGISIM_JAR or place logisim.jar beside this script.
+# Set LOGISIM_JAR or place picture-to-circuit.jar/logisim.jar beside this script or one directory above.
 # On macOS without Java, set LOGISIM_APP to a compatible Logisim.app.
 
 case $0 in
@@ -11,8 +11,10 @@ esac
 MAIN=com.cburch.logisim.gui.paint.PaintTool
 
 JAR=${LOGISIM_JAR:-}
-if [ -z "$JAR" ] && [ -f "$HERE/logisim.jar" ]; then
-  JAR=$HERE/logisim.jar
+if [ -z "$JAR" ]; then
+  for candidate in "$HERE/picture-to-circuit.jar" "$HERE/../picture-to-circuit.jar" "$HERE/logisim.jar" "$HERE/../logisim.jar"; do
+    if [ -f "$candidate" ]; then JAR=$candidate; break; fi
+  done
 fi
 
 JAVA=
@@ -35,7 +37,7 @@ if [ -n "$APP" ] && [ -x "$APP/Contents/MacOS/Logisim" ]; then
 fi
 
 if [ -z "$JAR" ] || [ ! -f "$JAR" ]; then
-  echo "paint-from-picture: set LOGISIM_JAR or put logisim.jar beside this script" >&2
+  echo "paint-from-picture: set LOGISIM_JAR or put picture-to-circuit.jar/logisim.jar beside this script or one directory above" >&2
 elif [ -z "$JAVA" ]; then
   echo "paint-from-picture: Java 8 or newer is required (set JAVA_HOME)" >&2
 else
