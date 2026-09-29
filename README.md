@@ -44,6 +44,24 @@ set LOGISIM_JAR=C:\path\to\picture-to-circuit.jar
 scripts\paint-from-picture.cmd --picture input.png --circ input.circ --out output.circ
 ```
 
+## 选择要处理的电路
+
+一个 `.circ` 文件可以包含多个电路。选择方式如下：
+
+- 图形界面：不带参数运行脚本，选择图片和 `.circ` 文件；文件载入后，在“电路”下拉框中选择具体电路，预览会按当前选择重新生成。
+- 命令行：先列出电路名称，再用 `--circuit` 指定名称：
+
+```sh
+scripts/paint-from-picture --list input.circ
+scripts/paint-from-picture \
+  --picture input.png \
+  --circ input.circ \
+  --circuit main \
+  --out main-painted.circ
+```
+
+如果省略 `--circuit`，命令行模式会默认处理该文件中的第一个电路。电路名称必须与 `--list` 输出完全一致。
+
 ## 常用参数
 
 ```text
