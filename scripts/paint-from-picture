@@ -1,0 +1,44 @@
+#!/bin/sh
+# Picture from Picture launcher for macOS and Linux.
+# It expects a Logisim JAR containing com.cburch.logisim.gui.paint.PaintTool.
+# Set LOGISIM_JAR or place logisim.jar beside this script.
+# On macOS without Java, set LOGISIM_APP to a compatible Logisim.app.
+
+case $0 in
+  */*) HERE=$(CDPATH= cd -- "${0%/*}" && pwd) ;;
+  *)   HERE=$(pwd) ;;
+esac
+MAIN=com.cburch.logisim.gui.paint.PaintTool
+
+JAR=${LOGISIM_JAR:-}
+if [ -z "$JAR" ] && [ -f "$HERE/logisim.jar" ]; then
+  JAR=$HERE/logisim.jar
+fi
+
+JAVA=
+if [ -n "${JAVA_HOME:-}" ] && [ -x "$JAVA_HOME/bin/java" ]; then
+  JAVA=$JAVA_HOME/bin/java
+elif command -v java >/dev/null 2>&1 && java -version >/dev/null 2>&1; then
+  JAVA=java
+fi
+
+if [ -n "$JAVA" ] && [ -n "$JAR" ] && [ -f "$JAR" ]; then
+  exec "$JAVA" -Dapple.awt.application.name="Paint from Picture" -cp "$JAR" "$MAIN" "$@"
+fi
+
+APP=${LOGISIM_APP:-}
+if [ -z "$APP" ] && [ -x "$HERE/Logisim.app/Contents/MacOS/Logisim" ]; then
+  APP=$HERE/Logisim.app
+fi
+if [ -n "$APP" ] && [ -x "$APP/Contents/MacOS/Logisim" ]; then
+  exec "$APP/Contents/MacOS/Logisim" -paint "$@"
+fi
+
+if [ -z "$JAR" ] || [ ! -f "$JAR" ]; then
+  echo "paint-from-picture: set LOGISIM_JAR or put logisim.jar beside this script" >&2
+elif [ -z "$JAVA" ]; then
+  echo "paint-from-picture: Java 8 or newer is required (set JAVA_HOME)" >&2
+else
+  echo "paint-from-picture: cannot run the configured Logisim JAR" >&2
+fi
+exit 1
